@@ -1,0 +1,24 @@
+---
+###
+# This is a minimal YAML file for tools that are
+# submitted manually. In case the tool is not found
+# on bio.tools and not released.
+###
+
+
+name: Faketool
+description: Fake fake fake description
+homepage: https://ki.se
+operatingSystem: [Linux]
+toolType: [Desktop application, Command-line tool, Web application]
+
+affiliation: ki.se
+pi: Test Testsson
+
+# either or both:
+contact_email: test.testsson@ki.se
+contact_url: 
+
+# do not change the following
+released: false
+devstatus: Active
