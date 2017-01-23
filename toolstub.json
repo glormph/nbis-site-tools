@@ -1,0 +1,12 @@
+{
+"pi": "Test Testsson",
+"affiliation": "ki.se",
+"devstatus": "Maintained_Active_or_Inactive",
+"released": true,
+"releasedate": "2017-01-01",
+"primary_doi": ["10.1093/bioinformatics/17.8.754"],
+"uses_doi": ["10.1093/bioinformatics/17.8.754"],
+"biotools_id": "ToolName",
+"biotools_version": "1.0.0.0a"
+}
+
