@@ -2,7 +2,7 @@ import json
 import urllib2
 import yaml
 import sys
-import bibtexparser
+#import bibtexparser
 
 
 BIO_TOOLS_URL = 'https://bio.tools/api/tool/{}/version/{}'
@@ -62,7 +62,7 @@ for field in biotools_required_fields:
               'sure all fields {} are in the '
               'bio.tools registry'.format(field, biotools_required_fields))
         sys.exit(1)
-    
+
 contact_success = False
 for field in biotools_required_contact:
     cfield = 'contact_{}'.format(field)
@@ -77,21 +77,38 @@ if not contact_success:
     print('Could not find either contactEmail or contactURL in bio.tools JSON')
     sys.exit(1)
 
+
 # Get bibtex from DOIs for publications
 # curl -L -H "Accept: application/x-bibtex; charset=utf-8" http://dx.doi.org/$1
 def get_bibtex(doi):
     url = DOI_URL.format(doi)
-    req = urllib2.Request(url, headers={'Accept': 'application/x-bibtex; charset=utf-8'})
+    req = urllib2.Request(url, headers={'Accept':
+                                        'application/x-bibtex; charset=utf-8'})
     return urllib2.urlopen(req).read()
+
+
+def get_json_doi(doi):
+    url = DOI_URL.format(doi)
+    req = urllib2.Request(url, headers={'Accept':
+                                        'application/json; charset=utf-8'})
+    return json.loads(urllib2.urlopen(req).read())
 
 
 output_yml['primary_pub'] = []
 for tooldoi in output_yml['primary_doi']:
-    bibtex = get_bibtex(tooldoi)
-    bibpub = bibtexparser.loads(bibtex).entries[0]
-    article_id = bibpub['ID'].split('_')
-    output_yml['primary_pub'].append('{}, {}'.format(' '.join(article_id[:-1]),
-                                                     article_id[-1]))
+    doidata = get_json_doi(tooldoi)
+    # in case we switch back to bibtex, this can be here.
+    #bibpub = bibtexparser.loads(bibtex).entries[0]
+    #article_id = bibpub['ID'].split('_')
+    authors_family_names = [x['family'] for x in doidata['author']]
+    authortxt = authors_family_names[0]
+    if len(authors_family_names) > 2:
+        authortxt = '{} et al.'.format(authortxt)
+    elif len(authors_family_names) == 2:
+        authortxt = '{} & {}'.format(authortxt, authors_family_names[1])
+    authortxt = '{}, {}'.format(authortxt,
+                                doidata['issued']['date-parts'][0][0])
+    output_yml['primary_pub'].append(authortxt)
 
 releasedate = output_yml.pop('releasedate')
 # write YAML
