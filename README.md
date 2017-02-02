@@ -7,8 +7,10 @@ JSON file, which is also stored here. This can be run on every tool update
 and downloads the tool from [bio.tools](http://bio.tools), adding some
 extra information.
 
-The script `tool_validator.py` is dependent on PyYAML and bibtexparser
-libraries, which can be installed by issueing `pip install PyYAML bibtexparser`
+The script `tool_validator.py` is dependent on the PyYAML 
+library, which can be installed by issueing `pip install PyYAML`, preferably
+in a virtual environment. The script uses `urllib2` which is a python2 module
+and will not work with python3.
 
 To create a JSON file for the script one can use the `toolstub.json` file as
 an example. Then run:
