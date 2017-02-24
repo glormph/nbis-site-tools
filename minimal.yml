@@ -11,8 +11,8 @@ description: Fake fake fake description
 homepage: https://ki.se
 operatingSystem: [Linux]
 
-# tool type can be anything you like but here are some examples
-toolType: [Desktop application, Command-line tool, Web application, Database, Tool, Service, Workflow, Platform, Container, Library, Other]
+# tool type can be anything you like but please stick to the bio.tools toolTypes from https://github.com/bio-tools/biotoolsSchema
+toolType: [Database portal, Desktop application, Library, Ontology, Plug-in, Script, SPARQL endpoint, Suite, Web application, Web API, Web service, Workbench, Workflow]
 affiliation: ki.se
 pi: Test Testsson
 
