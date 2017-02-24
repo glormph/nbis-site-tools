@@ -10,8 +10,9 @@ name: Faketool
 description: Fake fake fake description
 homepage: https://ki.se
 operatingSystem: [Linux]
-toolType: [Desktop application, Command-line tool, Web application]
 
+# tool type can be anything you like but here are some examples
+toolType: [Desktop application, Command-line tool, Web application, Database, Tool, Service, Workflow, Platform, Container, Library, Other]
 affiliation: ki.se
 pi: Test Testsson
 
