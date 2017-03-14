@@ -94,12 +94,7 @@ def get_json_doi(doi):
     return json.loads(urllib2.urlopen(req).read())
 
 
-output_yml['primary_pub'] = []
-for tooldoi in output_yml['primary_doi']:
-    doidata = get_json_doi(tooldoi)
-    # in case we switch back to bibtex, this can be here.
-    #bibpub = bibtexparser.loads(bibtex).entries[0]
-    #article_id = bibpub['ID'].split('_')
+def parse_bibtex_to_authornames(doidata):
     authors_family_names = [x['family'] for x in doidata['author']]
     authortxt = authors_family_names[0]
     if len(authors_family_names) > 2:
@@ -108,7 +103,23 @@ for tooldoi in output_yml['primary_doi']:
         authortxt = '{} & {}'.format(authortxt, authors_family_names[1])
     authortxt = '{}, {}'.format(authortxt,
                                 doidata['issued']['date-parts'][0][0])
+    return authortxt
+
+output_yml['primary_pub'] = []
+for tooldoi in output_yml['primary_doi']:
+    doidata = get_json_doi(tooldoi)
+    # in case we switch back to bibtex, this can be here.
+    #bibpub = bibtexparser.loads(bibtex).entries[0]
+    #article_id = bibpub['ID'].split('_')
+    authortxt = parse_bibtex_to_authornames(doidata)
     output_yml['primary_pub'].append(authortxt)
+
+output_yml['uses_pub'] = []
+for usesdoi in output_yml['uses_doi']:
+    doidata = get_json_doi(usesdoi)
+    authortxt = parse_bibtex_to_authornames(doidata)
+    output_yml['uses_pub'].append(authortxt)
+
 
 releasedate = output_yml.pop('releasedate')
 # write YAML
