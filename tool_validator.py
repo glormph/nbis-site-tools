@@ -5,7 +5,7 @@ import sys
 #import bibtexparser
 
 
-BIO_TOOLS_URL = 'https://bio.tools/api/tool/{}/version/{}'
+BIO_TOOLS_URL = 'https://bio.tools/api/tool/{}/?format=json'
 DOI_URL = 'http://dx.doi.org/{}'
 
 # Which fields are required:
@@ -17,7 +17,8 @@ fields_not_in_biotools = [# first the fields unknown to bio.tools
                           # on bio.tools because of display space
                           'primary_doi', 'uses_doi',
                           # for downloading the tool JSON
-                          'biotools_id', 'biotools_version']
+                          'biotools_id']
+                          #'biotools_version'] # Optional, required only for some tools
 # following fields MUST be in bio.tools entry
 biotools_required_fields = ['name', 'version', 'homepage', 'description',
                             'operatingSystem', 'toolType']
@@ -41,13 +42,19 @@ for field in fields_not_in_biotools:
 print(output_yml)
 
 # download bio.tools JSON
-tool_url = BIO_TOOLS_URL.format(output_yml['biotools_id'],
-                                output_yml['biotools_version'])
+if 'biotools_version' in stub:
+    biotools_url_id = '{}/version/{}'.format(output_yml['biotools_id'],
+                                             stub['biotools_version'])
+else:
+    biotools_url_id = output_yml['biotools_id']
+tool_url = BIO_TOOLS_URL.format(biotools_url_id)
 try:
     biotools_json = json.loads(urllib2.urlopen(tool_url).read())
 except urllib2.HTTPError:
     print('URL {} to bio.tools did not resolve. Please make sure the tool '
-          'ID and version are correct'.format(tool_url))
+          'ID is correct. If you are not passing a version number, you '
+          'may try to do so instead (but for most tools that should be '
+          'fine)'.format(tool_url))
     sys.exit(1)
 except ValueError:
     print('No correct JSON was returned when querying {}'.format(tool_url))

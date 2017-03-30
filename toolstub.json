@@ -6,7 +6,7 @@
 "releasedate": "2017-01-01",
 "primary_doi": ["10.1093/bioinformatics/17.8.754"],
 "uses_doi": ["10.1093/bioinformatics/17.8.754"],
-"biotools_id": "ToolName",
-"biotools_version": "1.0.0.0a"
+"biotools_version": "1.0.0.0a",
+"biotools_id": "ToolName"
 }
 
